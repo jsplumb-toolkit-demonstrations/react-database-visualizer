@@ -18,10 +18,6 @@ const mainElement = document.querySelector("#jtk-demo-dbase"),
 
 // ------------------------- dialogs ------------------------------------------------------------
 
-Dialogs.initialize({
-    selector: ".dlg"
-});
-
 class DemoComponent extends React.Component {
 
     constructor(props) {
@@ -247,6 +243,16 @@ class DemoComponent extends React.Component {
         });
     }
 }
+
+//
+// in this demo we use the Toolkit's dialogs, which were mostly created just to support the various demonstrations. The templates
+// for the dialogs are in `templates.html`, which is loaded separately, so this `.ready(..)` call is necessary, to ensure the Toolkit
+// has loaded the dialog templates before it tries to initialise them. If you dont use the Toolkit's dialogs you don't need any of this.
+jsPlumbToolkit.ready(function() {
+    Dialogs.initialize({
+        selector: ".dlg"
+    });
+});
 
 ReactDOM.render(<DemoComponent/>, document.querySelector(".jtk-demo-canvas"));
 
