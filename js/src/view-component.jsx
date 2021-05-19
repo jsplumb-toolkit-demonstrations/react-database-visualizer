@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Dialogs } from 'jsplumbtoolkit';
+//import { Dialogs } from 'jsplumbtoolkit';
 
 import { BaseComponent } from './base-component.jsx';
 
@@ -34,12 +34,12 @@ export class ViewComponent extends BaseComponent {
     }
 
     editQuery() {
-        Dialogs.show({
-            id: "dlgViewQuery",
-            data: this.node.data,
-            onOK: (data) => {
-                this.updateNode(data);
-            }
-        });
+        // Dialogs.show({
+        //     id: "dlgViewQuery",
+        //     data: this.node.data,
+        //     onOK: (data) => {
+        //         this.updateNode(data);
+        //     }
+        // });
     }
 }

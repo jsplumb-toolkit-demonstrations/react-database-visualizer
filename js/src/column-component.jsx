@@ -1,6 +1,6 @@
 import React from 'react';
-import { Dialogs } from 'jsplumbtoolkit';
-import { BasePortComponent } from 'jsplumbtoolkit-react';
+//import { Dialogs } from 'jsplumbtoolkit';
+import { BasePortComponent } from '@jsplumbtoolkit/react';
 
 export class ColumnComponent extends BasePortComponent {
 
@@ -12,7 +12,7 @@ export class ColumnComponent extends BasePortComponent {
 
         let c = this.state;
 
-        return <div className="table-column" data-column-type={c.datatype} primary-key={(c.primaryKey || false).toString()} data-port-id={c.id}>
+        return <div className="table-column" data-column-type={c.datatype} primary-key={(c.primaryKey || false).toString()} data-jtk-port-id={c.id}>
 
             <div className="table-column-delete" onClick={this.deleteColumn.bind(this)}>
                 <i className="fa fa-times table-column-delete-icon"/>
@@ -30,15 +30,15 @@ export class ColumnComponent extends BasePortComponent {
     }
 
     deleteColumn() {
-        Dialogs.show({
-            id: "dlgConfirm",
-            data: {
-                msg: "Delete column '" + this.state.name + "'"
-            },
-            onOK: (data) => {
-                this.removePort();
-            }
-        });
+        // Dialogs.show({
+        //     id: "dlgConfirm",
+        //     data: {
+        //         msg: "Delete column '" + this.state.name + "'"
+        //     },
+        //     onOK: (data) => {
+        //         this.removePort();
+        //     }
+        // });
     }
 
     editColumn() {

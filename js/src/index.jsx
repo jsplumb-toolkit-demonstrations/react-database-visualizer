@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { JsPlumbToolkitMiniviewComponent, JsPlumbToolkitSurfaceComponent }  from 'jsplumbtoolkit-react';
-import { jsPlumbToolkit, Dialogs } from 'jsplumbtoolkit';
+import { JsPlumbToolkitMiniviewComponent, JsPlumbToolkitSurfaceComponent }  from '@jsplumbtoolkit/react';
+import { newInstance, ready } from "@jsplumbtoolkit/browser-ui"
+import { uuid } from "@jsplumbtoolkit/core"
+import * as Dialogs from "@jsplumbtoolkit/dialogs"
 
 import DragDropNodeSource from './drag-drop-node-source.jsx';
 
@@ -13,7 +15,7 @@ import { TableComponent } from './table-component.jsx';
 import { ViewComponent } from './view-component.jsx';
 import { ColumnComponent } from './column-component.jsx';
 
-jsPlumbToolkit.ready(() => {
+ready(() => {
 
     const mainElement = document.querySelector("#jtk-demo-dbase"),
         nodePaletteElement = mainElement.querySelector(".node-palette"),
@@ -21,7 +23,7 @@ jsPlumbToolkit.ready(() => {
 
 // ------------------------- dialogs ------------------------------------------------------------
 
-    Dialogs.initialize({
+    const dialogs = Dialogs.createDialogManager({
         selector: ".dlg"
     });
 
@@ -29,10 +31,10 @@ jsPlumbToolkit.ready(() => {
 
         constructor(props) {
             super(props);
-            this.toolkit = jsPlumbToolkit.newInstance({
+            this.toolkit = newInstance({
                 nodeFactory: function (type, data, callback) {
                     data.columns = [];
-                    Dialogs.show({
+                    dialogs.show({
                         id: "dlgName",
                         title: "Enter " + type + " name:",
                         onOK: function (d) {
@@ -40,7 +42,7 @@ jsPlumbToolkit.ready(() => {
                             // if the user entered a name...
                             if (data.name) {
                                 if (data.name.length >= 2) {
-                                    data.id = jsPlumbUtil.uuid();
+                                    data.id = uuid();
                                     callback(data);
                                 }
                                 else
@@ -58,7 +60,7 @@ jsPlumbToolkit.ready(() => {
                 // Prevent connections from a column to itself or to another column on the same table.
                 //
                 beforeConnect:function(source, target) {
-                    return source !== target && source.getNode() !== target.getNode();
+                    return source !== target && source.getParent() !== target.getParent();
                 }
             });
 
@@ -89,37 +91,40 @@ jsPlumbToolkit.ready(() => {
                             }
                         },
                         overlays: [
-                            [ "Label", {
-                                cssClass: "delete-relationship",
-                                label: "<i class='fa fa-times'></i>",
-                                events: {
-                                    "tap":  (params) => {
-                                        this.toolkit.removeEdge(params.edge);
+                            {
+                                type: "Label",
+                                options: {
+                                    cssClass: "delete-relationship",
+                                    label: "<i class='fa fa-times'></i>",
+                                    events: {
+                                        "tap": (params) => {
+                                            this.toolkit.removeEdge(params.edge);
+                                        }
                                     }
                                 }
-                            } ]
+                            }
                         ]
                     },
                     // each edge type has its own overlays.
                     "1:1": {
                         parent: "common",
                         overlays: [
-                            ["Label", { label: "1", location: 0.1 }],
-                            ["Label", { label: "1", location: 0.9 }]
+                            { type:"Label", options:{ label: "1", location: 0.1 }},
+                            { type:"Label", options:{ label: "1", location: 0.9 }}
                         ]
                     },
                     "1:N": {
                         parent: "common",
                         overlays: [
-                            ["Label", { label: "1", location: 0.1 }],
-                            ["Label", { label: "N", location: 0.9 }]
+                            { type:"Label", options:{ label: "1", location: 0.1 }},
+                            { type:"Label", options:{ label: "N", location: 0.9 }}
                         ]
                     },
                     "N:M": {
                         parent: "common",
                         overlays: [
-                            ["Label", { label: "N", location: 0.1 }],
-                            ["Label", { label: "M", location: 0.9 }]
+                            { type:"Label", options:{ label: "N", location: 0.1 }},
+                            { type:"Label", options:{ label: "M", location: 0.9 }}
                         ]
                     }
                 },
@@ -154,16 +159,13 @@ jsPlumbToolkit.ready(() => {
                         padding: [150, 150]
                     }
                 },
-                miniview: {
-                    container: miniviewElement
-                },
                 // Register for certain events from the renderer. Here we have subscribed to the 'nodeRendered' event,
                 // which is fired each time a new node is rendered.  We attach listeners to the 'new column' button
                 // in each table node.  'data' has 'node' and 'el' as properties: node is the underlying node data,
                 // and el is the DOM element. We also attach listeners to all of the columns.
                 // At this point we can use our underlying library to attach event listeners etc.
                 events: {
-                    edgeAdded:  (params) => {
+                    "edge:add":  (params) => {
                         // Check here that the edge was not added programmatically, ie. on load.
                         if (params.addedByMouse) {
                             this._editEdge(params.edge, true);
@@ -197,7 +199,7 @@ jsPlumbToolkit.ready(() => {
         }
 
         componentDidMount() {
-            this.toolkit.load({url:"data/schema-1.json"});
+            this.toolkit.load({url:"../data/schema-1.json"});
             this.controls.initialize(this.surface);
 
             ReactDOM.render(
@@ -219,7 +221,7 @@ jsPlumbToolkit.ready(() => {
         }
 
         _editLabel (edge, deleteOnCancel) {
-            Dialogs.show({
+            dialogs.show({
                 id: "dlgText",
                 data: {
                     text: edge.data.label || ""
@@ -236,7 +238,7 @@ jsPlumbToolkit.ready(() => {
         }
 
         _editEdge (edge, isNew) {
-            Dialogs.show({
+            dialogs.show({
                 id: "dlgRelationshipType",
                 data: edge.data,
                 onOK: (data) => {

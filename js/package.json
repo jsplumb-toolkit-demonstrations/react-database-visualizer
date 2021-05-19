@@ -6,18 +6,19 @@
   "author": "jsPlumb <hello@jsplumbtoolkit.com> (https://jsplumbtoolkit.com)",
   "license": "Commercial",
   "scripts": {
-    "build": "node ./node_modules/webpack/bin/webpack.js",
+    "build": "npx webpack",
     "start": "webpack-dev-server"
   },
   "dependencies": {
     "@jsplumb/json-syntax-highlighter": "^1.0.2",
     "@jsplumb/toolkit-demo-support": "^1.0.0",
-    "@jsplumbtoolkit/browser-ui": "file:./jsplumbtoolkit-browser-ui.tgz",
-    "@jsplumbtoolkit/core": "file:jsplumbtoolkit-core.tgz",
-    "@jsplumbtoolkit/drop": "file:./jsplumbtoolkit-drop.tgz",
-    "@jsplumbtoolkit/react": "file:./jsplumbtoolkit-react.tgz",
-    "@jsplumbtoolkit/react-drop": "file:./jsplumbtoolkit-react-drop.tgz",
-    "@jsplumbtoolkit/undo-redo": "file:./jsplumbtoolkit-undo-redo.tgz",
+    "@jsplumbtoolkit/browser-ui": "file:../jsplumbtoolkit-browser-ui.tgz",
+    "@jsplumbtoolkit/core": "file:../jsplumbtoolkit-core.tgz",
+    "@jsplumbtoolkit/drop": "file:../jsplumbtoolkit-drop.tgz",
+    "@jsplumbtoolkit/react": "file:../jsplumbtoolkit-react.tgz",
+    "@jsplumbtoolkit/react-drop": "file:../jsplumbtoolkit-react-drop.tgz",
+    "@jsplumbtoolkit/undo-redo": "file:../jsplumbtoolkit-undo-redo.tgz",
+    "@jsplumbtoolkit/dialogs": "file:../jsplumbtoolkit-dialogs.tgz",
     "react": "^17.0.0",
     "react-dom": "^17.0.0"
   },
