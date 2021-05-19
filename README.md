@@ -902,7 +902,7 @@ export class ColumnComponent extends BasePortComponent {
 
         let c = this.state;
 
-        return <li className="table-column" data-column-type={c.datatype} primary-key={(c.primaryKey || false).toString()} data-port-id={c.id}>
+        return <li className="table-column" data-column-type={c.datatype} primary-key={(c.primaryKey || false).toString()} data-jtk-port-id={c.id}>
             <div className="table-column-edit" onClick={this.editColumn.bind(this)}>
                 <i className="fa fa-pencil table-column-edit-icon"/>
             </div>
