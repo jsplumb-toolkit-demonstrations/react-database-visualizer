@@ -71,12 +71,12 @@ There are seven entries specific to jsPlumb:
   "jsplumbtoolkit-undo-redo": "file:./jsplumbtoolkit-undo-redo.tgz",
   "jsplumbtoolkit-drop": "file:./jsplumbtoolkit-drop.tgz",
   "jsplumbtoolkit-react-drop": "file:./jsplumbtoolkit-react-drop.tgz",
-  "jsplumbtoolkit-syntax-highlighter": "file:./jsplumbtoolkit-syntax-highlighter.tgz",
-  "jsplumbtoolkit-demo-support": "file:./jsplumbtoolkit-demo-support.tgz"
+  "@jsplumb/json-syntax-highlighter": "^1.0.4",
+  "@jsplumb/toolkit-demo-support": "^1.0.1"
 }
 ```
 
-The first of these is the jsPlumb Toolkit code, the second is the Toolkit's React integration, the third is the undo/redo manager, the fourth/fifth are the drop manager plus the React wrapper around it, and the last two are some helper packages used by our demonstrations. If you use this code as a basis for your own app these last two are not strictly required.
+The first of these is the jsPlumb Toolkit code, the second is the Toolkit's React integration, the third is the undo/redo manager, the fourth/fifth are the drop manager plus the React wrapper around it, and the last two are some helper packages used by our demonstrations. If you use this code as a basis for your own app these last two are not strictly required. 
 
 You will need to copy these into the project root from your licensed download or your evaluation download before you run `npm install`.
 
@@ -145,28 +145,25 @@ module.exports = {
 The application is bootstrapped inside `src/index.jsx`:
 
 ```javascript
-jsPlumbToolkit.ready(() => {
 
-    const mainElement = document.querySelector("#jtk-demo-dbase"),
-        nodePaletteElement = mainElement.querySelector(".node-palette"),
-        miniviewElement = mainElement.querySelector(".miniview");
+const mainElement = document.querySelector("#jtk-demo-dbase"),
+    nodePaletteElement = mainElement.querySelector(".node-palette"),
+    miniviewElement = mainElement.querySelector(".miniview");
 
 // ------------------------- dialogs ------------------------------------------------------------
 
-    Dialogs.initialize({
-        selector: ".dlg"
-    });
-
-    class DemoComponent extends React.Component {
-
-        constructor(props) {
-            
-            ...
-            
-        }
-    }
-    
+Dialogs.initialize({
+    selector: ".dlg"
 });
+
+class DemoComponent extends React.Component {
+
+    constructor(props) {
+        
+        ...
+        
+    }
+
 
 ```
 
@@ -295,9 +292,6 @@ class DemoComponent extends React.Component {
             // model accordingly.
             ports: {
                 "default": {
-                    component:ColumnComponent,
-                    // NOTE: you can also use the `jsx` approach for ports.
-                    //jsx:(ctx) => { return <ColumnComponent ctx={ctx}/> },
                     paintStyle: { fill: "#f76258" },		// the endpoint's appearance
                     hoverPaintStyle: { fill: "#434343" }, // appearance when mouse hovering on endpoint or connection
                     edgeType: "common", // the type of edge for connections from this port type
@@ -310,7 +304,7 @@ class DemoComponent extends React.Component {
         };
 
         this.renderParams = {
-            // Layout the nodes using an absolute layout
+            // Layout the nodes using the Spring (force directed) layout
             layout: {
                 type: "Spring",
                 parameters: {
@@ -331,10 +325,7 @@ class DemoComponent extends React.Component {
                     if (params.addedByMouse) {
                         this._editEdge(params.edge, true);
                     }
-                }/*,
-                canvasClick:  (e) => {
-                    this.toolkit.clearSelection();
-                }*/
+                }
             },
             dragOptions: {
                 filter: "i, .view .buttons, .table .buttons, .table-column *, .view-edit, .edit-name, .delete, .add"
@@ -557,8 +548,7 @@ The parameters passed in to the Surface's constructor are:
  
  
 ```javascript
-this.renderParams = {
-    // Layout the nodes using an absolute layout
+this.renderParams = {    
     layout: {
         type: "Spring",
         parameters: {
@@ -662,9 +652,6 @@ this.view = {
     },
     ports: {
         "default": {
-            component:ColumnComponent,
-            // NOTE: you can also use the `jsx` approach for ports.
-            //jsx:(ctx) => { return <ColumnComponent ctx={ctx}/> },
             paintStyle: { fill: "#f76258" },		// the endpoint's appearance
             hoverPaintStyle: { fill: "#434343" }, // appearance when mouse hovering on endpoint or connection
             edgeType: "common", // the type of edge for connections from this port type
@@ -866,14 +853,13 @@ export class ViewComponent extends BaseComponent {
 ```
 
 <a name="rendering-columns"></a>
-### Rendering table volumns
+### Rendering table columns
 
 Columns are rendered using the `ColumnComponent`. It is mapped in the view shown above:
 
 ```
 ports: {
   "default": {
-    component: ColumnComponent,
     paintStyle: { fill: "#f76258" },		// the endpoint's appearance
     hoverPaintStyle: { fill: "#434343" }, // appearance when mouse hovering on endpoint or connection
     edgeType: "common", // the type of edge for connections from this port type
@@ -959,7 +945,7 @@ Most importantly here, note that it extends `BasePortComponent`. This is a requi
 
 `ColumnComponent` declares two helper methods:
 
-- **deleteColumn** Prompts the user to confirm they wish to delete the column. Note the call that does delete the column - it uses the `removePort()` method which is defined on `BasePortComponent`. The Toolkit takes care of cleaning up the UI and removing any edges it needs to etc.
+- **deleteColumn()** Prompts the user to confirm they wish to delete the column. Note the call that does delete the column - it uses the `removePort()` method which is defined on `BasePortComponent`. The Toolkit takes care of cleaning up the UI and removing any edges it needs to etc.
   
 - **editColumn()** Prompts the user with a dialog on which they can change a column's name and/or datatype, and whether or not it is a primary key. Note the use of the `getPort()` method on the component to get access to the current port data, and then subsequently the call to `updatePort({...})` on the column component. Both of these methods are declared on the Toolkit's `BasePortComponent` and act on the port that the component is representing.
 
