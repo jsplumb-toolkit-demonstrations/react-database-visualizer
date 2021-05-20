@@ -22,6 +22,7 @@
 
 .jtk-node {
     z-index: 11;
+    border:none;
     overflow: hidden;
 }
 
