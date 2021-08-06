@@ -1,8 +1,8 @@
 import React from 'react';
 
-//import { Dialogs } from 'jsplumbtoolkit';
 import { BaseComponent } from './base-component.jsx';
 import { ColumnComponent } from './column-component.jsx';
+import { uuid } from "@jsplumbtoolkit/core"
 
 export class TableComponent extends BaseComponent {
 
@@ -29,25 +29,22 @@ export class TableComponent extends BaseComponent {
     }
 
     addColumn() {
-        // Dialogs.show({
-        //     id: "dlgColumnEdit",
-        //     title: "Column Details",
-        //     onOK:  (data) => {
-        //         // if the user supplied a column name, tell the toolkit to add a new port, providing it the
-        //         // id and name of the new column.  This will result in a callback to the portFactory defined above.
-        //         if (data.name) {
-        //             if (data.name.length < 2)
-        //                 alert("Column ids must be at least 2 characters!");
-        //             else {
-        //                 this.toolkit.addNewPort(this.node, "column", {
-        //                     id: jsPlumbUtil.uuid(),
-        //                     name: data.name.replace(" ", "_").toLowerCase(),
-        //                     primaryKey: data.primaryKey,
-        //                     datatype: data.datatype
-        //                 });
-        //             }
-        //         }
-        //     }
-        // });
+
+        this.dialogManager.showEdgeDialog(null, (data) => {
+            // if the user supplied a column name, tell the toolkit to add a new port, providing it the
+            // id and name of the new column.  This will result in a callback to the portFactory defined above.
+            if (data.name) {
+                if (data.name.length < 2)
+                    alert("Column ids must be at least 2 characters!");
+                else {
+                    this.toolkit.addNewPort(this.node, "column", {
+                        id: uuid(),
+                        name: data.name.replace(" ", "_").toLowerCase(),
+                        primaryKey: data.primaryKey,
+                        datatype: data.datatype
+                    });
+                }
+            }
+        })
     }
 }

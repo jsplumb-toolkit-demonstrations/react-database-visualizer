@@ -44,7 +44,6 @@ This page gives you an in-depth look at how the application is put together.
     "react-dom": "^17.0.0",
     "jsplumbtoolkit": "file:./jsplumbtoolkit.tgz",
     "jsplumbtoolkit-react": "file:./jsplumbtoolkit-react.tgz",
-    "jsplumbtoolkit-undo-redo": "file:./jsplumbtoolkit-undo-redo.tgz",
     "jsplumbtoolkit-drop": "file:./jsplumbtoolkit-drop.tgz",
     "jsplumbtoolkit-react-drop": "file:./jsplumbtoolkit-react-drop.tgz",
     "jsplumbtoolkit-syntax-highlighter": "file:./jsplumbtoolkit-syntax-highlighter.tgz",
@@ -68,7 +67,6 @@ There are seven entries specific to jsPlumb:
 {
   "jsplumbtoolkit": "file:./jsplumbtoolkit.tgz",
   "jsplumbtoolkit-react": "file:./jsplumbtoolkit-react.tgz",
-  "jsplumbtoolkit-undo-redo": "file:./jsplumbtoolkit-undo-redo.tgz",
   "jsplumbtoolkit-drop": "file:./jsplumbtoolkit-drop.tgz",
   "jsplumbtoolkit-react-drop": "file:./jsplumbtoolkit-react-drop.tgz",
   "jsplumbtoolkit-syntax-highlighter": "file:./jsplumbtoolkit-syntax-highlighter.tgz",
@@ -1038,7 +1036,7 @@ The controls component also provides the "zoom to fit" button (as shown in the c
 
 ##### Undo/redo
 
-The controls component attaches an [Undo/redo manager](https://docs.jsplumbtoolkit.com/toolkit/current/articles/undo-redo) to the underlying Toolkit instance, to offer undo/redo support for node, group, port and edge additions and/or removals.
+The controls component uses various methods built in to the Toolkit to offer undo/redo support for node, group, port and edge additions and/or removals.
  
 
 [TOP](#top)
@@ -1109,8 +1107,6 @@ The component binds to the Toolkit's `dataUpdated` method, which is fired whenev
 
 ```
 import React from 'react';
-
-import { jsPlumbToolkitUndoRedo } from 'jsplumbtoolkit-undo-redo';
 
 export class ControlsComponent extends React.Component {
 

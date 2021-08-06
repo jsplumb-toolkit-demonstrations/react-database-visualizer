@@ -4,16 +4,100 @@
     <meta charset="UTF-8">
     <title>jsPlumb Toolkit React Demo</title>
       <link rel="stylesheet" href="node_modules/@jsplumbtoolkit/browser-ui/css/jsplumbtoolkit.css">
-      <link rel="stylesheet" href="node_modules/@jsplumb/json-syntax-highlighter/jsplumbtoolkit-syntax-highlighter.css">
-      <link rel="stylesheet" href="node_modules/@jsplumb/toolkit-demo-support/jsplumbtoolkit-demo-support.css">
+      <link rel="stylesheet" href="node_modules/@jsplumbtoolkit/browser-ui/css/jsplumbtoolkit-demo-support.css">
+      <link rel="stylesheet" href="node_modules/@jsplumbtoolkit/dialogs/css/jsplumbtoolkit-dialogs.css">
 
-      <link rel="stylesheet" href="../app.css">
+      <link rel="stylesheet" href="app.css">
   </head>
   <body>
 
     <!-- content -->
 
-    <script type="text/x-jtk-templates" src="templates.html"></script>
+    <script type="jtk" class="dlg" id="dlgRelationshipType" title="Edit Relationship">
+        <div class="db-cardinality">
+            <ul>
+                <li>
+                    <label>
+                        <input type="radio" name="rType" value="1:1" jtk-focus jtk-att="type" checked/>
+                        1:1 - One to One
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="rType" value="1:N" jtk-att="type"/>
+                        1:N - One to Many
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="rType" value="N:M" jtk-att="type"/>
+                        N:M - Many to Many
+                    </label>
+                </li>
+            </ul>
+        </div>
+    </script>
+
+        <!-- edit column type and key details -->
+        <script type="jtk" class="dlg" id="dlgColumnEdit" title="Edit Column">
+        <div class="db-column-type">
+            <label>
+                <div class="form-labels-float">name:</div>
+                <div class="pull-left"><input class="" jtk-att="name" jtk-focus jtk-commit="true"/></div>
+                <div class="clearfix"/>
+            </label>
+
+            <div class="checkbox-id">
+                <label>
+                    <input type="checkbox" class="chkPrimaryKey" jtk-att="primaryKey"/>
+                    Primary Key
+                </label>
+            </div>
+
+            <p>
+                <div class="form-labels">Type:</div>
+                <div class="clearfix"></div>
+                <ul>
+                    <li>
+                        <label>
+                            <input type="radio" name="cType" value="integer" jtk-focus jtk-att="datatype"/>
+                            Integer
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="radio" name="cType" value="varchar" jtk-att="datatype" checked/>
+                            Varchar
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="radio" name="cType" value="date" jtk-att="datatype"/>
+                            Date
+                        </label>
+                    </li>
+                </ul>
+            </p>
+        </div>
+      </script>
+
+        <!-- edit view query -->
+        <script type="jtk" class="dlg" id="dlgViewQuery" title="Edit Query">
+          <textarea class="txtViewQuery" jtk-focus jtk-att="query" jtk-commit="true"/>
+      </script>
+
+        <!-- edit name (table or view) -->
+        <script type="jtk" class="dlg" id="dlgName" title="Enter Name">
+          <input type="text" size="50" jtk-focus jtk-att="name" jtk-commit="true"/>
+      </script>
+
+        <script type="jtk" class="dlg" id="dlgConfirm" title="Please Confirm">
+          ${msg}?
+      </script>
+
+        <script type="jtk" class="dlg" id="dlgMessage" title="Message" cancel="false">
+          ${msg}
+      </script>
 
 
     <div class="jtk-demo-main" id="jtk-demo-dbase">
@@ -44,7 +128,6 @@
                     <li>Click the 'Home' icon to zoom out and see all the nodes.</li>
                 </ul>
             </div>
-            <div class="dataset-placeholder"></div>
         </div>
 
     </div>

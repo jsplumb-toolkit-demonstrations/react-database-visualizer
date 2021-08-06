@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as UndoRedo from '@jsplumbtoolkit/undo-redo';
+import { EVENT_UNDOREDO_UPDATE } from "@jsplumbtoolkit/core"
 
 export class ControlsComponent extends React.Component {
 
@@ -21,14 +21,10 @@ export class ControlsComponent extends React.Component {
     initialize(surface) {
         this.surface = surface;
         this.toolkit = surface.toolkitInstance
-        this.undoManager = UndoRedo.createUndoRedoManager({
-            surface:this.surface,
-            compound:true,
-            onChange:(mgr, undoCount, redoCount) => {
-                this._container.setAttribute("can-undo", undoCount > 0);
-                this._container.setAttribute("can-redo", redoCount > 0);
-            }
-        });
+        this.toolkit.bind(EVENT_UNDOREDO_UPDATE, (state) => {
+            this._container.setAttribute("can-undo", state.undoCount > 0 ? "true" : "false")
+            this._container.setAttribute("can-redo", state.redoCount > 0 ? "true" : "false")
+        })
 
         this.surface.bind("modeChanged", (mode) => {
             // jsPlumb.removeClass(this._container.querySelectorAll("[data-mode]"), "selected-mode");
@@ -54,10 +50,10 @@ export class ControlsComponent extends React.Component {
     }
 
     undo() {
-        this.undoManager.undo();
+        this.toolkit.undo()
     }
 
     redo() {
-        this.undoManager.redo();
+        this.toolkit.redo()
     }
 }

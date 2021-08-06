@@ -1,21 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { JsPlumbToolkitMiniviewComponent, JsPlumbToolkitSurfaceComponent }  from '@jsplumbtoolkit/react';
-import { newInstance, ready } from "@jsplumbtoolkit/browser-ui"
-import { uuid } from "@jsplumbtoolkit/core"
-import * as Dialogs from "@jsplumbtoolkit/dialogs"
+import {
+    JsPlumbToolkitMiniviewComponent,
+    JsPlumbToolkitSurfaceComponent,
+    newInstance,
+    LabelOverlay,
+    AnchorLocations,
+    EVENT_DBL_TAP,
+    EVENT_TAP
+}  from '@jsplumbtoolkit/browser-ui-react';
+
+import { uuid, EVENT_EDGE_ADDED } from "@jsplumbtoolkit/core"
+import { newInstance as newDialogs, Dialogs } from "@jsplumbtoolkit/dialogs"
+
+import { SpringLayout } from "@jsplumbtoolkit/layout-spring";
+import { StateMachineConnector } from "@jsplumb/connector-bezier"
 
 import DragDropNodeSource from './drag-drop-node-source.jsx';
 
 import { ControlsComponent } from './controls-component.jsx';
-import { DatasetComponent } from './dataset-component.jsx';
 
 import { TableComponent } from './table-component.jsx';
 import { ViewComponent } from './view-component.jsx';
 import { ColumnComponent } from './column-component.jsx';
 
-ready(() => {
 
     const mainElement = document.querySelector("#jtk-demo-dbase"),
         nodePaletteElement = mainElement.querySelector(".node-palette"),
@@ -23,9 +32,37 @@ ready(() => {
 
 // ------------------------- dialogs ------------------------------------------------------------
 
-    const dialogs = Dialogs.createDialogManager({
+    const dialogs = newDialogs({
         selector: ".dlg"
     });
+
+    const dialogManager = {
+        showDeleteDialog:(vertex, onOK) => {
+            dialogs.show({
+                id: "dlgConfirm",
+                data: {
+                    msg: `Delete ${vertex.id} ?`
+                },
+                onOK
+            })
+        },
+        showEditDialog:(vertex, onOK) => {
+            dialogs.show({
+                id: "dlgName",
+                data: vertex.data,
+                title: `Edit ${vertex.data.type} name`,
+                onOK
+            });
+        },
+        showEdgeDialog:(existingEdge, onOK, onCancel) => {
+            dialogs.show({
+                id: "dlgColumnEdit",
+                title: "Column Details",
+                data: existingEdge == null ? null : existingEdge.data,
+                onOK
+            });
+        }
+    }
 
     class DemoComponent extends React.Component {
 
@@ -71,10 +108,10 @@ ready(() => {
                 // When you use `component`, the Toolkit handles that for you.
                 nodes: {
                     "table": {
-                        jsx: (ctx) => <TableComponent ctx={ctx} />
+                        jsx: (ctx) => <TableComponent ctx={ctx} dlg={dialogManager} />
                     },
                     "view": {
-                        component:ViewComponent
+                        jsx: (ctx) => <ViewComponent ctx={ctx} dlg={dialogManager} />
                     }
                 },
                 // Three edge types  - '1:1', '1:N' and 'N:M',
@@ -82,22 +119,22 @@ ready(() => {
                 // and appearance is defined.
                 edges: {
                     "common": {
-                        anchor: [ "Left", "Right" ], // anchors for the endpoints
-                        connector: "StateMachine",  //  StateMachine connector type
+                        anchor: [ AnchorLocations.Left, AnchorLocations.Right ], // anchors for the endpoints
+                        connector: StateMachineConnector.type,  //  StateMachine connector type
                         cssClass:"common-edge",
                         events: {
-                            "dbltap": (params) => {
+                            [EVENT_DBL_TAP]: (params) => {
                                 this._editEdge(params.edge);
                             }
                         },
                         overlays: [
                             {
-                                type: "Label",
+                                type: LabelOverlay.type,
                                 options: {
                                     cssClass: "delete-relationship",
-                                    label: "<i class='fa fa-times'></i>",
+                                    label: "x",
                                     events: {
-                                        "tap": (params) => {
+                                        [EVENT_TAP]: (params) => {
                                             this.toolkit.removeEdge(params.edge);
                                         }
                                     }
@@ -154,10 +191,7 @@ ready(() => {
             this.renderParams = {
                 // Layout the nodes using an absolute layout
                 layout: {
-                    type: "Spring",
-                    parameters: {
-                        padding: [150, 150]
-                    }
+                    type: SpringLayout.type
                 },
                 // Register for certain events from the renderer. Here we have subscribed to the 'nodeRendered' event,
                 // which is fired each time a new node is rendered.  We attach listeners to the 'new column' button
@@ -165,7 +199,7 @@ ready(() => {
                 // and el is the DOM element. We also attach listeners to all of the columns.
                 // At this point we can use our underlying library to attach event listeners etc.
                 events: {
-                    "edge:add":  (params) => {
+                    [EVENT_EDGE_ADDED]:  (params) => {
                         // Check here that the edge was not added programmatically, ie. on load.
                         if (params.addedByMouse) {
                             this._editEdge(params.edge, true);
@@ -214,10 +248,6 @@ ready(() => {
             ReactDOM.render(
                 <JsPlumbToolkitMiniviewComponent surface={this.surface}/>, document.querySelector(".miniview")
             );
-
-            ReactDOM.render(
-                <DatasetComponent surface={this.surface}/>, document.querySelector(".dataset-placeholder")
-            );
         }
 
         _editLabel (edge, deleteOnCancel) {
@@ -257,5 +287,3 @@ ready(() => {
     }        
 
     ReactDOM.render(<DemoComponent/>, document.querySelector(".jtk-demo-canvas"));
-
-});

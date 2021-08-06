@@ -1,6 +1,6 @@
 import React from 'react';
 //import { Dialogs } from 'jsplumbtoolkit';
-import { BasePortComponent } from '@jsplumbtoolkit/react';
+import { BasePortComponent } from '@jsplumbtoolkit/browser-ui-react';
 
 export class ColumnComponent extends BasePortComponent {
 
