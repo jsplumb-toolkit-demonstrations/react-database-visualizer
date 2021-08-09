@@ -10,14 +10,14 @@
     "start": "webpack-dev-server"
   },
   "dependencies": {
-    "@jsplumbtoolkit/browser-ui-react": "^5.0.0-RC13",
-    "@jsplumbtoolkit/browser-ui-react-drop": "^5.0.0-RC13",
-    "@jsplumb/connector-bezier": "^5.0.0-RC13",
-    "@jsplumbtoolkit/layout-spring": "^5.0.0-RC13",
-    "@jsplumbtoolkit/dialogs": "^5.0.0-RC13",
-    "@jsplumbtoolkit/browser-ui-plugin-lasso": "^5.0.0-RC13",
-    "@jsplumbtoolkit/browser-ui-plugin-drawing-tools": "^5.0.0-RC13",
-    "@jsplumbtoolkit/browser-ui-plugin-miniview": "^5.0.0-RC13",
+    "@jsplumbtoolkit/browser-ui-react": "^5.0.0-RC14",
+    "@jsplumbtoolkit/browser-ui-react-drop": "^5.0.0-RC14",
+    "@jsplumb/connector-bezier": "^5.0.0-RC14",
+    "@jsplumbtoolkit/layout-spring": "^5.0.0-RC14",
+    "@jsplumbtoolkit/dialogs": "^5.0.0-RC14",
+    "@jsplumbtoolkit/browser-ui-plugin-lasso": "^5.0.0-RC14",
+    "@jsplumbtoolkit/browser-ui-plugin-drawing-tools": "^5.0.0-RC14",
+    "@jsplumbtoolkit/browser-ui-plugin-miniview": "^5.0.0-RC14",
     "jsplumbtoolkit-demo-support": "^1.0.0",
     "react": "^17.0.0",
     "react-dom": "^17.0.0"
