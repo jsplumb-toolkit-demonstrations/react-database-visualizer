@@ -12,7 +12,7 @@ export class ColumnComponent extends BasePortComponent {
 
         let c = this.state;
 
-        return <div className="table-column" data-column-type={c.datatype} primary-key={(c.primaryKey || false).toString()} data-jtk-port-id={c.id}>
+        return <div className="table-column" data-column-type={c.datatype} primary-key={(c.primaryKey || false).toString()} data-jtk-port={c.id} data-jtk-scope={c.datatype} data-jtk-source={true} data-jtk-target={true}>
 
             <div className="table-column-delete" onClick={this.deleteColumn.bind(this)}>
                 <i className="fa fa-times table-column-delete-icon"/>
@@ -24,8 +24,6 @@ export class ColumnComponent extends BasePortComponent {
                 <i className="fa fa-pencil table-column-edit-icon"/>
             </div>
 
-            <jtk-source port-id={c.id} scope={c.datatype} filter=".table-column-delete, .table-column-delete-icon, span, .table-column-edit, .table-column-edit-icon" filter-exclude="true"/>
-            <jtk-target port-id={c.id} scope={c.datatype}/>
         </div>
     }
 
