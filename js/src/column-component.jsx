@@ -1,11 +1,13 @@
 import React from 'react';
-//import { Dialogs } from 'jsplumbtoolkit';
 import { BasePortComponent } from '@jsplumbtoolkit/browser-ui-react';
 
 export class ColumnComponent extends BasePortComponent {
 
+    dialogManager;
+
     constructor(props) {
         super(props);
+        this.dialogManager = props.dlg;
     }
 
     render() {
@@ -28,38 +30,28 @@ export class ColumnComponent extends BasePortComponent {
     }
 
     deleteColumn() {
-        // Dialogs.show({
-        //     id: "dlgConfirm",
-        //     data: {
-        //         msg: "Delete column '" + this.state.name + "'"
-        //     },
-        //     onOK: (data) => {
-        //         this.removePort();
-        //     }
-        // });
+        this.dialogManager.showDeleteDialog(this.getPort(), (data) => {
+            this.removePort();
+        });
     }
 
     editColumn() {
         let port = this.getPort();
-        Dialogs.show({
-            id: "dlgColumnEdit",
-            title: "Column Details",
-            data: port.data,
-            onOK: (data) => {
-                // save changes if name is 2 or more characters.
-                if (data.name) {
-                    if (data.name.length < 2) {
-                        Dialogs.show({id: "dlgMessage", msg: "Column names must be at least 2 characters!"});
-                    }
-                    else {
-                        this.updatePort({
-                            name: data.name.replace(" ", "_").toLowerCase(),
-                            primaryKey: data.primaryKey,
-                            datatype: data.datatype
-                        });
-                    }
+
+        this.dialogManager.showEdgeDialog(port, (data) => {
+            // if the user supplied a column name, tell the toolkit to add a new port, providing it the
+            // id and name of the new column.  This will result in a callback to the portFactory defined above.
+            if (data.name) {
+                if (data.name.length < 2)
+                    alert("Column ids must be at least 2 characters!");
+                else {
+                    this.updatePort({
+                        name: data.name.replace(" ", "_").toLowerCase(),
+                        primaryKey: data.primaryKey,
+                        datatype: data.datatype
+                    });
                 }
             }
-        });
+        })
     }
 }
