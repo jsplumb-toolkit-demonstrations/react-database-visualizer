@@ -22,7 +22,7 @@ export class TableComponent extends BaseComponent {
                 </div>
             </div>
             <div className="table-columns">
-                { this.node.data.columns.map(c => <ColumnComponent data={c} key={c.id} toolkit={this.toolkit} surface={this.surface} vertex={this.vertex}/>) }
+                { this.node.data.columns.map(c => <ColumnComponent data={c} dlg={this.dialogManager} key={c.id} toolkit={this.toolkit} surface={this.surface} vertex={this.vertex}/>) }
             </div>
 
         </div>
