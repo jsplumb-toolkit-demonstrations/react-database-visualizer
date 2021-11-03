@@ -6,19 +6,21 @@
   "author": "jsPlumb <hello@jsplumbtoolkit.com> (https://jsplumbtoolkit.com)",
   "license": "Commercial",
   "scripts": {
-    "build": "node ./node_modules/webpack/bin/webpack.js",
+    "build": "npx webpack",
     "start": "webpack-dev-server"
   },
   "dependencies": {
+    "@jsplumbtoolkit/browser-ui-react": "^5.0.0",
+    "@jsplumbtoolkit/browser-ui-react-drop": "^5.0.0",
+    "@jsplumb/connector-bezier": "^5.0.0",
+    "@jsplumbtoolkit/layout-spring": "^5.0.0",
+    "@jsplumbtoolkit/dialogs": "^5.0.0",
+    "@jsplumbtoolkit/browser-ui-plugin-lasso": "^5.0.0",
+    "@jsplumbtoolkit/browser-ui-plugin-drawing-tools": "^5.0.0",
+    "@jsplumbtoolkit/browser-ui-plugin-miniview": "^5.0.0",
+    "jsplumbtoolkit-demo-support": "^1.0.0",
     "react": "^17.0.0",
-    "react-dom": "^17.0.0",
-    "jsplumbtoolkit": "file:./jsplumbtoolkit.tgz",
-    "jsplumbtoolkit-react": "file:./jsplumbtoolkit-react.tgz",
-    "jsplumbtoolkit-undo-redo": "file:./jsplumbtoolkit-undo-redo.tgz",
-    "jsplumbtoolkit-drop": "file:./jsplumbtoolkit-drop.tgz",
-    "jsplumbtoolkit-react-drop": "file:./jsplumbtoolkit-react-drop.tgz",
-    "@jsplumb/json-syntax-highlighter": "^1.0.4",
-    "@jsplumb/toolkit-demo-support": "^1.0.1"
+    "react-dom": "^17.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.22.1",

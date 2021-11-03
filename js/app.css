@@ -20,17 +20,13 @@
 /* --- Node common -------------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------------------------- */
 
-.jtk-node {
-    z-index: 11;
-    border:none;
-    overflow: hidden;
-}
-
 .table, .view {
     background-color: #3E7E9C;
     border-radius: 4px;
     cursor: pointer;
     font-size: 12px;
+    z-index: 11;
+    overflow: hidden;
     min-width:80px;
     min-height:30px;
     width: auto;
@@ -81,6 +77,8 @@
 .table-columns {
     display: flex;
     flex-direction: column;
+    overflow: auto;
+    position:relative;
 }
 
 .table-column {
@@ -129,7 +127,7 @@
 }
 
 [data-column-type='integer'] {
-    background-color: #cbe6de;
+    background-color:#a0c6bb;
 }
 
 [data-column-type='date'] {
@@ -137,7 +135,7 @@
 }
 
 .table-column[primary-key='true'] {
-    background-color:#83b8a8;
+    background-color: pink;
 }
 
 /* ----------------------------------------------------------------------------------------------------- */
@@ -186,7 +184,7 @@
 /* ---------------------------------------------------------------------------------------------------- */
 /* --- Drag/drop interactions ------------------------------------------------------------------------- */
 /* ---------------------------------------------------------------------------------------------------- */
-.drop-hover {
+.jtk-drag-hover {
     background-color: #629f72 !important;
     color: #FFF !important;
 }
@@ -250,5 +248,17 @@
 
 .pull-left { float: left; }
 .clearfix { clear: both; }
+
+
+.jtk-overlay {
+    z-index:10;
+}
+
+.jtk-connector{
+    z-index:9;
+}
+
+
+
 
 

@@ -55,11 +55,6 @@
                     "id": "name",
                     "name": "name",
                     "datatype": "varchar"
-                },
-                {
-                    "id": "contact_id",
-                    "name": "contact_id",
-                    "datatype": "varchar"
                 }
             ]
         },
@@ -77,69 +72,6 @@
                 {
                     "id": "name",
                     "name": "name",
-                    "datatype": "varchar"
-                },
-                {
-                    "id": "created",
-                    "name": "created",
-                    "datatype": "date"
-                },
-                {
-                    "id": "preferred",
-                    "name": "preferred",
-                    "datatype": "integer"
-                },
-                {
-                    "id": "region",
-                    "name": "region",
-                    "datatype": "varchar"
-                },
-                {
-                    "id": "currency",
-                    "name": "currency",
-                    "datatype": "varchar"
-                },
-                {
-                    "id": "contact_id",
-                    "name": "contact_id",
-                    "datatype": "varchar"
-                }
-            ]
-        },
-        {
-            "id": "contacts",
-            "name": "contacts",
-            "type": "table",
-            "columns": [
-                {
-                    "id":"id",
-                    "primaryKey": true,
-                    "name": "id",
-                    "datatype": "varchar"
-                },
-                {
-                    "id": "first_name",
-                    "name": "first_name",
-                    "datatype": "varchar"
-                },
-                {
-                    "id": "last_name",
-                    "name": "last_name",
-                    "datatype": "varchar"
-                },
-                {
-                    "id": "email",
-                    "name": "email",
-                    "datatype": "varchar"
-                },
-                {
-                    "id": "created",
-                    "name": "created",
-                    "datatype": "date"
-                },
-                {
-                    "id": "type",
-                    "name": "contact_type",
                     "datatype": "varchar"
                 }
             ]
@@ -193,20 +125,6 @@
         {
             "source": "publisher.id",
             "target": "book_publisher.publisher_id",
-            "data": {
-                "type": "1:1"
-            }
-        },
-        {
-            "source": "publisher.contact_id",
-            "target": "contacts.id",
-            "data": {
-                "type": "1:1"
-            }
-        },
-        {
-            "source": "author.contact_id",
-            "target": "contacts.id",
             "data": {
                 "type": "1:1"
             }
