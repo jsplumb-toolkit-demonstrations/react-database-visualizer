@@ -233,7 +233,7 @@ import { ColumnComponent } from './column-component.jsx';
         }
 
         componentDidMount() {
-            this.toolkit.load({url:"../data/schema-1.json"});
+            this.toolkit.load({url:"data/schema-1.json"});
             this.controls.initialize(this.surface);
 
             ReactDOM.render(
