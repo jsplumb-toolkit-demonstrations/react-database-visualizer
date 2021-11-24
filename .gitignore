@@ -2,3 +2,5 @@
 .idea
 *.tgz
 node_modules
+dist
+
