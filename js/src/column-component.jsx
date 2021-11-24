@@ -38,7 +38,7 @@ export class ColumnComponent extends BasePortComponent {
     editColumn() {
         let port = this.getPort();
 
-        this.dialogManager.showEdgeDialog(port, (data) => {
+        this.dialogManager.showColumnDialog(port, (data) => {
             // if the user supplied a column name, tell the toolkit to add a new port, providing it the
             // id and name of the new column.  This will result in a callback to the portFactory defined above.
             if (data.name) {

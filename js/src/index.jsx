@@ -11,8 +11,9 @@ import {
     EVENT_TAP
 }  from '@jsplumbtoolkit/browser-ui-react';
 
-import { uuid, EVENT_EDGE_ADDED } from "@jsplumbtoolkit/core"
-import { newInstance as newDialogs, Dialogs } from "@jsplumbtoolkit/dialogs"
+import { uuid } from "@jsplumbtoolkit/core"
+import { newInstance as newDialogs } from "@jsplumbtoolkit/dialogs"
+import { LassoPlugin } from "@jsplumbtoolkit/browser-ui-plugin-lasso"
 
 import { SpringLayout } from "@jsplumbtoolkit/layout-spring";
 import { StateMachineConnector } from "@jsplumb/connector-bezier"
@@ -54,15 +55,25 @@ import { ColumnComponent } from './column-component.jsx';
                 onOK
             });
         },
-        showEdgeDialog:(existingEdge, onOK, onCancel) => {
+        showColumnDialog:(existingColumn, onOK, onCancel) => {
             dialogs.show({
                 id: "dlgColumnEdit",
                 title: "Column Details",
-                data: existingEdge == null ? null : existingEdge.data,
+                data: existingColumn == null ? null : existingColumn.data,
                 onOK
             });
         }
     }
+
+function showEdgeEditDialog(data, continueFunction, abortFunction) {
+
+    dialogs.show({
+        id: "dlgRelationshipType",
+        data: data,
+        onOK: continueFunction,
+        onCancel: abortFunction
+    });
+}
 
     class DemoComponent extends React.Component {
 
@@ -88,6 +99,10 @@ import { ColumnComponent } from './column-component.jsx';
                             // else...do not proceed.
                         }
                     });
+                },
+                edgeFactory:function(type, data, continueCallback, abortCallback) {
+                    showEdgeEditDialog(data, continueCallback, abortCallback)
+                    return true
                 },
                 // the name of the property in each node's data that is the key for the data for the ports for that node.
                 // we used to use portExtractor and portUpdater in this demo, prior to the existence of portDataProperty.
@@ -124,7 +139,9 @@ import { ColumnComponent } from './column-component.jsx';
                         cssClass:"common-edge",
                         events: {
                             [EVENT_DBL_TAP]: (params) => {
-                                this._editEdge(params.edge);
+                                showEdgeEditDialog(params.edge.data, (d) => {
+                                    this.toolkit.updateEdge(params.edge, d);
+                                })
                             }
                         },
                         overlays: [
@@ -199,21 +216,18 @@ import { ColumnComponent } from './column-component.jsx';
                 // and el is the DOM element. We also attach listeners to all of the columns.
                 // At this point we can use our underlying library to attach event listeners etc.
                 events: {
-                    [EVENT_EDGE_ADDED]:  (params) => {
-                        // Check here that the edge was not added programmatically, ie. on load.
-                        if (params.addedByMouse) {
-                            this._editEdge(params.edge, true);
-                        }
-                    }/*,
                     canvasClick:  (e) => {
                         this.toolkit.clearSelection();
-                    }*/
+                    }
                 },
                 dragOptions: {
                     filter: "i, .view .buttons, .table .buttons, .table-column *, .view-edit, .edit-name, .delete, .add"
                 },
                 consumeRightClick: false,
-                zoomToFit:true
+                zoomToFit:true,
+                plugins:[
+                    LassoPlugin.type
+                ],
             }
         }
 
@@ -261,24 +275,6 @@ import { ColumnComponent } from './column-component.jsx';
                 },
                 onCancel:() => {
                     if (deleteOnCancel) {
-                        this.toolkit.removeEdge(edge);
-                    }
-                }
-            });
-        }
-
-        _editEdge (edge, isNew) {
-            dialogs.show({
-                id: "dlgRelationshipType",
-                data: edge.data,
-                onOK: (data) => {
-                    // update the type in the edge's data model...it will be re-rendered.
-                    // `type` is set in the radio buttons in the dialog template.
-                    this.toolkit.updateEdge(edge, data);
-                },
-                onCancel: () => {
-                    // if the user pressed cancel on a new edge, delete the edge.
-                    if (isNew) {
                         this.toolkit.removeEdge(edge);
                     }
                 }
