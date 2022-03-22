@@ -2,7 +2,7 @@
 
 This is a port of the database visualizer demonstration using the Toolkit's React integration, and Javascript.  This branch requires that you have access to version 5.x of the jsPlumb Toolkit.
 
-You can see this demonstration in action here: [https://demo.jsplumbtoolkit.com/react-flowchart-builder/](https://demo.jsplumbtoolkit.com/react-flowchart-builder/)
+You can see this demonstration in action here: [https://demo.jsplumbtoolkit.com/react-database-visualizer/](https://demo.jsplumbtoolkit.com/react-database-visualizer/)
 
 ### Installation
 
