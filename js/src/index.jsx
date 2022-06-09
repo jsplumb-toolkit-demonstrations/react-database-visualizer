@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+// (React 18)
+//import { createRoot } from 'react-dom/client';
 
 import {
     JsPlumbToolkitMiniviewComponent,
@@ -12,10 +14,10 @@ import {
 }  from '@jsplumbtoolkit/browser-ui-react';
 
 import { uuid } from "@jsplumbtoolkit/core"
-import { newInstance as newDialogs } from "@jsplumbtoolkit/dialogs"
+import { newInstance as newDialogs } from "@jsplumbtoolkit/dialogs-2"
 import { LassoPlugin } from "@jsplumbtoolkit/browser-ui-plugin-lasso"
 
-import { SpringLayout } from "@jsplumbtoolkit/layout-spring";
+import { ForceDirectedLayout } from "@jsplumbtoolkit/layout-force-directed";
 import { StateMachineConnector } from "@jsplumb/connector-bezier"
 
 import DragDropNodeSource from './drag-drop-node-source.jsx';
@@ -62,23 +64,23 @@ import { ColumnComponent } from './column-component.jsx';
                 data: existingColumn == null ? null : existingColumn.data,
                 onOK
             });
+        },
+        showEdgeEditDialog:(data, continueFunction, abortFunction) => {
+            dialogs.show({
+                id: "dlgRelationshipType",
+                data: data,
+                onOK: continueFunction,
+                onCancel: abortFunction
+            });
         }
     }
 
-function showEdgeEditDialog(data, continueFunction, abortFunction) {
-
-    dialogs.show({
-        id: "dlgRelationshipType",
-        data: data,
-        onOK: continueFunction,
-        onCancel: abortFunction
-    });
-}
 
     class DemoComponent extends React.Component {
 
         constructor(props) {
             super(props);
+
             this.toolkit = newInstance({
                 nodeFactory: function (type, data, callback) {
                     data.columns = [];
@@ -101,7 +103,7 @@ function showEdgeEditDialog(data, continueFunction, abortFunction) {
                     });
                 },
                 edgeFactory:function(type, data, continueCallback, abortCallback) {
-                    showEdgeEditDialog(data, continueCallback, abortCallback)
+                    dialogManager.showEdgeEditDialog(data, continueCallback, abortCallback)
                     return true
                 },
                 // the name of the property in each node's data that is the key for the data for the ports for that node.
@@ -139,7 +141,7 @@ function showEdgeEditDialog(data, continueFunction, abortFunction) {
                         cssClass:"common-edge",
                         events: {
                             [EVENT_DBL_TAP]: (params) => {
-                                showEdgeEditDialog(params.edge.data, (d) => {
+                                dialogManager.showEdgeEditDialog(params.edge.data, (d) => {
                                     this.toolkit.updateEdge(params.edge, d);
                                 })
                             }
@@ -206,9 +208,9 @@ function showEdgeEditDialog(data, continueFunction, abortFunction) {
             };
 
             this.renderParams = {
-                // Layout the nodes using an absolute layout
+                // Layout the nodes using a force directed layout
                 layout: {
-                    type: SpringLayout.type
+                    type: ForceDirectedLayout.type
                 },
                 // Register for certain events from the renderer. Here we have subscribed to the 'nodeRendered' event,
                 // which is fired each time a new node is rendered.  We attach listeners to the 'new column' button
@@ -250,14 +252,30 @@ function showEdgeEditDialog(data, continueFunction, abortFunction) {
             this.toolkit.load({url:"data/schema-1.json"});
             this.controls.initialize(this.surface);
 
+            // (React 18)
+            // const paletteRoot = createRoot(nodePaletteElement)
+            // paletteRoot.render(
+            //     <DragDropNodeSource
+            //         surface={this.surface}
+            //         selector={"div"}
+            //         container={nodePaletteElement}
+            //         dataGenerator={this.dataGenerator}
+            //     />);
+
             ReactDOM.render(
                 <DragDropNodeSource
                     surface={this.surface}
                     selector={"div"}
                     container={nodePaletteElement}
                     dataGenerator={this.dataGenerator}
-                />
-                , nodePaletteElement);
+                />, nodePaletteElement);
+
+            // (React 18)
+            // const miniviewElement = document.querySelector(".miniview")
+            // const miniviewRoot = createRoot(miniviewElement)
+            // miniviewRoot.render(
+            //     <JsPlumbToolkitMiniviewComponent surface={this.surface}/>
+            // );
 
             ReactDOM.render(
                 <JsPlumbToolkitMiniviewComponent surface={this.surface}/>, document.querySelector(".miniview")
@@ -282,4 +300,10 @@ function showEdgeEditDialog(data, continueFunction, abortFunction) {
         }
     }        
 
+
     ReactDOM.render(<DemoComponent/>, document.querySelector(".jtk-demo-canvas"));
+
+// (React 18)
+// const canvas = document.querySelector(".jtk-demo-canvas")
+// const root = createRoot(canvas)
+// root.render(<DemoComponent/>)
