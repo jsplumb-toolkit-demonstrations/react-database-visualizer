@@ -2,7 +2,7 @@ import React from 'react';
 
 import { BaseComponent } from './base-component.jsx';
 import { ColumnComponent } from './column-component.jsx';
-import { uuid } from "@jsplumbtoolkit/core"
+import { uuid } from "@jsplumbtoolkit/browser-ui"
 
 export class TableComponent extends BaseComponent {
 

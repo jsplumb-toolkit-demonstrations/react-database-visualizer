@@ -1,7 +1,5 @@
 import React from 'react';
 
-//import { Dialogs } from 'jsplumbtoolkit';
-
 import { BaseComponent } from './base-component.jsx';
 
 export class ViewComponent extends BaseComponent {

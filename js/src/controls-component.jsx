@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { EVENT_UNDOREDO_UPDATE } from "@jsplumbtoolkit/core"
+import { EVENT_UNDOREDO_UPDATE } from "@jsplumbtoolkit/browser-ui"
 
 export class ControlsComponent extends React.Component {
 

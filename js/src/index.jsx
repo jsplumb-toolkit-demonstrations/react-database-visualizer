@@ -6,19 +6,19 @@ import ReactDOM from 'react-dom';
 import {
     JsPlumbToolkitMiniviewComponent,
     JsPlumbToolkitSurfaceComponent,
+}  from '@jsplumbtoolkit/browser-ui-react';
+
+import {
+    Dialogs,
+    LassoPlugin,
+    ForceDirectedLayout,
+    StateMachineConnector,
     newInstance,
     LabelOverlay,
     AnchorLocations,
     EVENT_DBL_TAP,
-    EVENT_TAP
-}  from '@jsplumbtoolkit/browser-ui-react';
-
-import { uuid } from "@jsplumbtoolkit/core"
-import { newInstance as newDialogs } from "@jsplumbtoolkit/dialogs-2"
-import { LassoPlugin } from "@jsplumbtoolkit/browser-ui-plugin-lasso"
-
-import { ForceDirectedLayout } from "@jsplumbtoolkit/layout-force-directed";
-import { StateMachineConnector } from "@jsplumb/connector-bezier"
+    EVENT_TAP,
+    uuid } from "@jsplumbtoolkit/browser-ui"
 
 import DragDropNodeSource from './drag-drop-node-source.jsx';
 
@@ -35,7 +35,7 @@ import { ColumnComponent } from './column-component.jsx';
 
 // ------------------------- dialogs ------------------------------------------------------------
 
-    const dialogs = newDialogs({
+    const dialogs = new Dialogs({
         selector: ".dlg"
     });
 
